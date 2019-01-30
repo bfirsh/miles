@@ -1,4 +1,5 @@
 # 🎺 Miles
+
 **Everything you need to build a modern JavaScript app**
 
 Redux, GraphQL, Babel, Webpack… are you struggling to get your head around the JavaScript ecosystem?
@@ -31,7 +32,7 @@ const TodoView = ({ onClick, completed, text }) => (
   <li
     onClick={onClick}
     style={{
-      textDecoration: completed ? 'line-through' : 'none'
+      textDecoration: completed ? "line-through" : "none"
     }}
   >
     {text}
@@ -51,13 +52,23 @@ Then, wire the two together with a controller:
 
 ```javascript
 const TodoListController = () => (
-  <h1>Todos</h1>
-  <Query query={Todo.all()} render={({ loading, error, todos }) => {
-    if (loading) return (<div>Loading...</div>);
-    if (error) return (<div>Error: {error}</div>);
+  <div>
+    <h1>Todos</h1>
+    <Query
+      query={Todo.all()}
+      render={({ loading, error, todos }) => {
+        if (loading) return <div>Loading...</div>;
+        if (error) return <div>Error: {error}</div>;
 
-    return <TodoListView todos={todos} toggleTodo={(id) => Todo.get(id).toggle()} />;
-  }} />
+        return (
+          <TodoListView
+            todos={todos}
+            toggleTodo={id => Todo.get(id).toggle()}
+          />
+        );
+      }}
+    />
+  </div>
 );
 ```
 
@@ -93,4 +104,3 @@ $ npm start
 When it finished booting, you can go to http://localhost:3000 and it should be running.
 
 ... yada yada
-
