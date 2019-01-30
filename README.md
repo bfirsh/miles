@@ -13,9 +13,9 @@ You model your data as classes, then Miles does the heavy lifting of storing the
 First, you define your models:
 
 ```javascript
-class Todo extends Miles.Model {
-  text: StringField(),
-  completed: BooleanField(default=false),
+class Todo extends Model {
+  text = new StringField(),
+  completed = new BooleanField({default: false}),
 
   toggle() {
     this.update({completed: !this.completed});
@@ -42,7 +42,7 @@ const TodoView = ({ onClick, completed, text }) => (
 const TodoListView = ({ todos, toggleTodo }) => (
   <ul>
     {todos.map(todo => (
-      <TodoView key={todo.id} {...todo} onClick={() => toggleTodo(todo.id)} />
+      <TodoView key={todo.id} {...todo} onClick={() => toggleTodo(todo)} />
     ))}
   </ul>
 );
@@ -54,20 +54,14 @@ Then, wire the two together with a controller:
 const TodoListController = () => (
   <div>
     <h1>Todos</h1>
-    <Query
-      query={Todo.all()}
-      render={({ loading, error, todos }) => {
+    <Query query={Todo.all()}>
+      {({ loading, error, data }) => {
         if (loading) return <div>Loading...</div>;
-        if (error) return <div>Error: {error}</div>;
+        if (error) return <div>Error: {error.toString()}</div>;
 
-        return (
-          <TodoListView
-            todos={todos}
-            toggleTodo={id => Todo.get(id).toggle()}
-          />
-        );
+        return <TodoListView todos={data} toggleTodo={todo => todo.toggle()} />;
       }}
-    />
+    </Query>
   </div>
 );
 ```
