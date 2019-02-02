@@ -6,7 +6,7 @@ import TodoListController from "./controllers/todoList";
 
 import { ApolloProvider } from "react-apollo";
 
-import client from "./client";
+import { client } from "miles/client";
 
 class App extends Component {
   render() {

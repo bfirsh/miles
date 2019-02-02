@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 
 import Todo from "../models/todo";
 import TodoListView from "../views/todoList";

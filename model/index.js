@@ -1,5 +1,5 @@
-import gql from "graphql-tag";
-import client from "../client";
+const gql = require("graphql-tag");
+const { client } = require("../client");
 
 const UpdateTodoMutation = gql`
   mutation UpdateTodo($id: ID!, $completed: Boolean!) {
@@ -49,4 +49,6 @@ class Model {
   }
 }
 
-export default Model;
+module.exports = {
+  Model: Model
+};
