@@ -1,8 +1,8 @@
-import { Model } from "miles";
-import gql from "graphql-tag";
+import { Model } from "miles/models";
 
 class Todo extends Model {
-  props = {
+  static fields = {
+    id: "id",
     text: "string",
     completed: "boolean"
   };
@@ -11,28 +11,5 @@ class Todo extends Model {
     this.update({ completed: !this.completed });
   }
 }
-
-Todo.typeDefs = gql`
-  type Query {
-    todos: [Todo]!
-    todo(id: ID!): Todo
-  }
-
-  type Todo {
-    id: ID!
-    text: String
-    completed: Boolean!
-  }
-
-  type TodoUpdateResponse {
-    success: Boolean!
-    message: String
-    todo: [Todo]
-  }
-
-  type Mutation {
-    updateTodo(id: ID!, completed: Boolean!): TodoUpdateResponse
-  }
-`;
 
 export default Todo;

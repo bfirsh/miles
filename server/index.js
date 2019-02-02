@@ -1,6 +1,7 @@
 const { ApolloServer } = require("apollo-server");
 const TodoAPI = require("./datasources/todo");
 const resolvers = require("./resolvers");
+const { generateSchema } = require("../models/schema");
 
 const todoAPI = new TodoAPI();
 
@@ -15,7 +16,7 @@ class MilesServer {
 
   listen() {
     const server = new ApolloServer({
-      typeDefs: this.models[0].typeDefs,
+      typeDefs: generateSchema(this.models),
       resolvers: resolvers,
       dataSources: () => ({ todoAPI: todoAPI })
     });
