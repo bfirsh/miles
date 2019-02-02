@@ -24,10 +24,12 @@ class Model {
     }
     client.mutate({
       mutation: updateMutation(this.constructor),
-      variables: {
-        id: this.id,
-        completed: newAttrs.completed
-      }
+      variables: Object.assign(
+        {
+          id: this.id
+        },
+        newAttrs
+      )
     });
   }
 }
