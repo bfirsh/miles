@@ -2,9 +2,9 @@ import { Model } from "miles/models";
 
 class Todo extends Model {
   static fields = {
-    id: "id",
-    text: "string",
-    completed: "boolean"
+    id: "ID",
+    text: "String",
+    completed: "Boolean"
   };
 
   toggle() {

@@ -2,11 +2,11 @@ const graphql = require("graphql");
 
 function typeFromField(field) {
   switch (field) {
-    case "id":
+    case "ID":
       return graphql.GraphQLID;
-    case "string":
+    case "String":
       return graphql.GraphQLString;
-    case "boolean":
+    case "Boolean":
       return graphql.GraphQLBoolean;
     default:
       throw new Error(`unknown field type: ${field}`);
