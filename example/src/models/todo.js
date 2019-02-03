@@ -1,4 +1,5 @@
 import { Model } from "miles/models";
+import { createQuery } from "miles/models/query";
 
 class Todo extends Model {
   static fields = {
@@ -11,5 +12,6 @@ class Todo extends Model {
     this.update({ completed: !this.completed });
   }
 }
+Todo.Query = createQuery(Todo);
 
 export default Todo;

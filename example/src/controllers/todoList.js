@@ -3,30 +3,19 @@ import React from "react";
 import Todo from "../models/todo";
 import TodoListView from "../views/todoList";
 
-import { Query } from "react-apollo";
-
-const MilesQuery = ({ query, children }) => (
-  <Query query={query} pollInterval={500}>
-    {({ loading, error, data }) => {
-      if (data && data.todos) {
-        data = data.todos.map(attrs => new Todo(attrs));
-      }
-      return children({ loading, error, data });
-    }}
-  </Query>
-);
-
 const TodoListController = () => (
   <div>
     <h1>Todos</h1>
-    <MilesQuery query={Todo.all()}>
-      {({ loading, error, data }) => {
+    <Todo.Query>
+      {({ loading, error, todos }) => {
         if (loading) return <div>Loading...</div>;
         if (error) return <div>Error: {error.toString()}</div>;
 
-        return <TodoListView todos={data} toggleTodo={todo => todo.toggle()} />;
+        return (
+          <TodoListView todos={todos} toggleTodo={todo => todo.toggle()} />
+        );
       }}
-    </MilesQuery>
+    </Todo.Query>
   </div>
 );
 
