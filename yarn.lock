@@ -3,11 +3,11 @@
 
 
 "@apollographql/apollo-tools@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@apollographql/apollo-tools/-/apollo-tools-0.3.0.tgz#45e29010cd1c4ffb0d359d49ad243eba7ea13cba"
-  integrity sha512-Tg0NVtCFHMQkcSX/dqT0m+BNnK9/lbjo4YFNX9W5g3EwczlC0edrleUM/dC4wXw71DwGrGwFiZxWLxqY1ocU5A==
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@apollographql/apollo-tools/-/apollo-tools-0.3.1.tgz#0bc7f4e900dbd8d50a6d5d084756094278b24e8e"
+  integrity sha512-1AVbiOm/3Uj91/7D8pVpap6CfF87Kuwy6m4divFw/Zm4Xno4Nkwd7C4UaMiulFVydLoUqhd/ivsr37QbWOcMSA==
   dependencies:
-    apollo-env "0.3.0"
+    apollo-env "0.3.1"
 
 "@apollographql/graphql-playground-html@^1.6.6":
   version "1.6.6"
@@ -248,12 +248,12 @@ apollo-engine-reporting@0.2.1:
     graphql-extensions "0.4.2"
     lodash "^4.17.10"
 
-apollo-env@0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/apollo-env/-/apollo-env-0.3.0.tgz#6150cedeb8a6f6620172c0ab4222bd73d185651c"
-  integrity sha512-L3oDC+q+fpnGaV2ZrcyClrezUbzzwnxDDoTeTaxUfahrfyyV2vyLI7yzEbi0TP5U4Jbb7uqrJKVeaMFe4vVjJA==
+apollo-env@0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/apollo-env/-/apollo-env-0.3.1.tgz#ad38dad25b1548d1f24d07ccb20152fb75ea22a1"
+  integrity sha512-ujdBJjq9rjXx7ebrVylFmoSZA7LQTqa8HnIMB3dOLimdr0O/LKdJ33/ei5S2V1kQQ+jD5TafWqE7393ue6NSNg==
   dependencies:
-    core-js "^3.0.0-beta.3"
+    core-js "3.0.0-beta.3"
     node-fetch "^2.2.0"
 
 apollo-link-dedup@^1.0.0:
@@ -467,7 +467,7 @@ cookie@0.3.1:
   resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.3.1.tgz#e7e0a1f9ef43b4c8ba925c5c5a96e806d16873bb"
   integrity sha1-5+Ch+e9DtMi6klxcWpboBtFoc7s=
 
-core-js@3.0.0-beta.3, core-js@^3.0.0-beta.3:
+core-js@3.0.0-beta.3:
   version "3.0.0-beta.3"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.0.0-beta.3.tgz#b0f22009972b8c6c04550ebf38513ca4b3cc9559"
   integrity sha512-kM/OfrnMThP5PwGAj5HhQLdjUqzjrllqN2EVnk/X9qrLsfYjR2hzZ+E/8CzH0xuosexZtqMTLQrk//BULrBj9w==
