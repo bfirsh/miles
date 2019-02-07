@@ -1,5 +1,9 @@
 const { client } = require("../client");
-const { createMutation, updateMutation } = require("./graphqlQuery");
+const {
+  createMutation,
+  updateMutation,
+  deleteMutation
+} = require("./graphqlQuery");
 
 class Model {
   constructor(attrs) {
@@ -20,6 +24,13 @@ class Model {
         },
         newAttrs
       )
+    });
+  }
+
+  delete() {
+    return client.mutate({
+      mutation: deleteMutation(this.constructor),
+      variables: { id: this.id }
     });
   }
 

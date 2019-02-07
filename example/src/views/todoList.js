@@ -1,20 +1,25 @@
 import React from "react";
 
-const TodoView = ({ onClick, completed, text }) => (
+const TodoView = ({ onClick, onDelete, completed, text }) => (
   <li
     onClick={onClick}
     style={{
       textDecoration: completed ? "line-through" : "none"
     }}
   >
-    {text}
+    {text} <span onClick={onDelete}>🗑</span>
   </li>
 );
 
-const TodoListView = ({ todos, toggleTodo }) => (
+const TodoListView = ({ todos, toggleTodo, deleteTodo }) => (
   <ul>
     {todos.map(todo => (
-      <TodoView key={todo.id} {...todo} onClick={() => toggleTodo(todo)} />
+      <TodoView
+        key={todo.id}
+        {...todo}
+        onClick={() => toggleTodo(todo)}
+        onDelete={() => deleteTodo(todo)}
+      />
     ))}
   </ul>
 );

@@ -35,6 +35,13 @@ module.exports = {
         message: "todo updated",
         todo: todo
       };
+    },
+    deleteTodo: (_, { id }, { dataSources }) => {
+      dataSources.todoAPI.deleteTodo(id);
+      return {
+        success: true,
+        message: "todo deleted"
+      };
     }
   }
 };

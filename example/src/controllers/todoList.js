@@ -17,7 +17,11 @@ const TodoListController = () => (
             <TodoCreateView
               createTodo={text => Todo.create({ text: text, completed: false })}
             />
-            <TodoListView todos={todos} toggleTodo={todo => todo.toggle()} />
+            <TodoListView
+              todos={todos}
+              toggleTodo={todo => todo.toggle()}
+              deleteTodo={todo => todo.delete()}
+            />
           </React.Fragment>
         );
       }}

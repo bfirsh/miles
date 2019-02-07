@@ -27,10 +27,19 @@ class TodoAPI extends DataSource {
   }
 
   updateTodo({ id, completed }) {
-    const todo = STORE.filter(obj => obj.id === id)[0];
+    const todo = this.getTodoById(id);
     if (!todo) return;
     todo.completed = completed;
     return todo;
+  }
+
+  deleteTodo(id) {
+    for (let i = STORE.length - 1; i >= 0; i--) {
+      if (STORE[i].id === id) {
+        STORE.splice(i, 1);
+        break;
+      }
+    }
   }
 }
 

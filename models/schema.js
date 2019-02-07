@@ -21,7 +21,8 @@ function fieldsFromModel({ model, required, id }) {
       continue;
     }
     const type = typeFromField(model.fields[key]);
-    if (required) {
+    // IDs are always required, if we're including them
+    if (required || key == "id") {
       fields[key] = { type: new graphql.GraphQLNonNull(type) };
     } else {
       fields[key] = { type: type };
@@ -100,6 +101,12 @@ function generateMutation(modelTypes) {
     fields[`update${modelName}`] = {
       type: responseType,
       args: fieldsFromModel({ model: model, required: false, id: true })
+    };
+    fields[`delete${modelName}`] = {
+      type: responseType,
+      args: {
+        id: { type: new graphql.GraphQLNonNull(graphql.GraphQLID) }
+      }
     };
   }
   return new graphql.GraphQLObjectType({

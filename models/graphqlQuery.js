@@ -87,8 +87,20 @@ function updateMutation(model) {
   `);
 }
 
+function deleteMutation(model) {
+  return gql(String.raw`
+    mutation Delete${model.name}($id: ID!) {
+      delete${model.name}(id: $id) {
+        success
+        message
+      }
+    }
+  `);
+}
+
 module.exports = {
   allQuery: allQuery,
   createMutation: createMutation,
-  updateMutation: updateMutation
+  updateMutation: updateMutation,
+  deleteMutation: deleteMutation
 };
