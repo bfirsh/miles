@@ -13,9 +13,13 @@ function typeFromField(field) {
   }
 }
 
-function fieldsFromModel({ model, required }) {
+function fieldsFromModel({ model, required, id }) {
   const fields = {};
   for (let key in model.fields) {
+    // Don't include ids
+    if (key === "id" && !id) {
+      continue;
+    }
     const type = typeFromField(model.fields[key]);
     if (required) {
       fields[key] = { type: new graphql.GraphQLNonNull(type) };
@@ -29,7 +33,7 @@ function fieldsFromModel({ model, required }) {
 function typeFromModel(model) {
   return new graphql.GraphQLObjectType({
     name: model.name,
-    fields: fieldsFromModel({ model: model, required: true })
+    fields: fieldsFromModel({ model: model, required: true, id: true })
   });
 }
 
@@ -85,13 +89,17 @@ function generateMutation(modelTypes) {
       fields: {
         success: { type: new graphql.GraphQLNonNull(graphql.GraphQLBoolean) },
         message: { type: graphql.GraphQLString },
-        todo: { type: type }
+        [model.lowerName()]: { type: type }
       }
     });
 
+    fields[`create${modelName}`] = {
+      type: responseType,
+      args: fieldsFromModel({ model: model, required: true, id: false })
+    };
     fields[`update${modelName}`] = {
       type: responseType,
-      args: fieldsFromModel({ model: model, required: false })
+      args: fieldsFromModel({ model: model, required: false, id: true })
     };
   }
   return new graphql.GraphQLObjectType({
@@ -103,12 +111,13 @@ function generateMutation(modelTypes) {
 function generateSchema(models) {
   const modelTypes = generateModelTypes(models);
 
-  return graphql.printSchema(
+  const schema = graphql.printSchema(
     new graphql.GraphQLSchema({
       query: generateQuery(modelTypes),
       mutation: generateMutation(modelTypes)
     })
   );
+  return schema;
 }
 
 module.exports = { generateSchema: generateSchema };

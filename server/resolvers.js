@@ -4,6 +4,22 @@ module.exports = {
     todo: (_, { id }, { dataSources }) => dataSources.todoAPI.getTodoById(id)
   },
   Mutation: {
+    createTodo: (_, attrs, { dataSources }) => {
+      const todo = dataSources.todoAPI.createTodo(attrs);
+
+      if (!todo) {
+        return {
+          success: false,
+          message: "failed to create todo"
+        };
+      }
+
+      return {
+        success: true,
+        message: "todo created",
+        todo: todo
+      };
+    },
     updateTodo: (_, { id, completed }, { dataSources }) => {
       const todo = dataSources.todoAPI.updateTodo({ id, completed });
 

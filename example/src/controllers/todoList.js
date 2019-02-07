@@ -1,6 +1,7 @@
 import React from "react";
 
 import Todo from "../models/todo";
+import TodoCreateView from "../views/todoCreate";
 import TodoListView from "../views/todoList";
 
 const TodoListController = () => (
@@ -12,7 +13,12 @@ const TodoListController = () => (
         if (error) return <div>Error: {error.toString()}</div>;
 
         return (
-          <TodoListView todos={todos} toggleTodo={todo => todo.toggle()} />
+          <React.Fragment>
+            <TodoCreateView
+              createTodo={text => Todo.create({ text: text, completed: false })}
+            />
+            <TodoListView todos={todos} toggleTodo={todo => todo.toggle()} />
+          </React.Fragment>
         );
       }}
     </Todo.Query>

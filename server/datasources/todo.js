@@ -1,4 +1,5 @@
 const { DataSource } = require("apollo-datasource");
+const uuidv4 = require("uuid/v4");
 
 const STORE = [
   { id: "1", text: "Get milk", completed: false },
@@ -12,6 +13,17 @@ class TodoAPI extends DataSource {
 
   getTodoById(id) {
     return STORE.filter(obj => obj.id === id)[0];
+  }
+
+  createTodo(attrs) {
+    const todo = Object.assign(
+      {
+        id: uuidv4()
+      },
+      attrs
+    );
+    STORE.push(todo);
+    return todo;
   }
 
   updateTodo({ id, completed }) {

@@ -9,32 +9,77 @@ function allQuery(model) {
 /*
  * Produces argument strings like `$id: ID!, $completed: Boolean`
  */
-function operationArguments(fields) {
-  const bits = [];
-  for (let name in fields) {
-    // Only IDs are non-null
-    if (name == "id") {
-      bits.push("$id: ID!");
-    } else {
-      bits.push(`$${name}: ${fields[name]}`);
-    }
-  }
-  return bits.join(", ");
+function operationArgumentString(fields) {
+  return fields
+    .map(f => `$${f.name}: ${f.type}${f.required ? "!" : ""}`)
+    .join(", ");
+}
+
+/*
+ * Produces argument strings for create mutations.
+ */
+function createOperationArguments(model) {
+  const fieldNames = Object.keys(model.fields).filter(n => n != "id");
+  return operationArgumentString(
+    fieldNames.map(name => {
+      return {
+        name: name,
+        type: model.fields[name],
+        required: true
+      };
+    })
+  );
+}
+
+/*
+ * Produces argument strings for update mutations.
+ */
+function updateOperationArguments(model) {
+  const fieldNames = Object.keys(model.fields);
+  return operationArgumentString(
+    fieldNames.map(name => {
+      return {
+        name: name,
+        type: model.fields[name],
+        required: name == "id"
+      };
+    })
+  );
 }
 
 /*
  * Produces arguments like `id: $id, completed: $completed`
  */
-function mutationArguments(fields) {
-  return Object.keys(fields)
-    .map(name => `${name}: $${name}`)
-    .join(", ");
+function mutationArguments(fieldNames) {
+  return fieldNames.map(name => `${name}: $${name}`).join(", ");
+}
+
+function createMutationArguments(model) {
+  return mutationArguments(Object.keys(model.fields).filter(n => n != "id"));
+}
+
+function updateMutationArguments(model) {
+  return mutationArguments(Object.keys(model.fields));
+}
+
+function createMutation(model) {
+  return gql(String.raw`
+    mutation Create${model.name}(${createOperationArguments(model)}) {
+      create${model.name}(${createMutationArguments(model)}) {
+        success
+        message
+        ${model.lowerName()} {
+          ${Object.keys(model.fields).join(" ")}
+        }
+      }
+    }
+  `);
 }
 
 function updateMutation(model) {
   return gql(String.raw`
-    mutation Update${model.name}(${operationArguments(model.fields)}) {
-      update${model.name}(${mutationArguments(model.fields)}) {
+    mutation Update${model.name}(${updateOperationArguments(model)}) {
+      update${model.name}(${updateMutationArguments(model)}) {
         success
         message
       }
@@ -44,5 +89,6 @@ function updateMutation(model) {
 
 module.exports = {
   allQuery: allQuery,
+  createMutation: createMutation,
   updateMutation: updateMutation
 };

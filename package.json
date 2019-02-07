@@ -21,6 +21,7 @@
     "graphql-tag": "^2.10.1",
     "react": "^16.7.0",
     "react-apollo": "^2.4.1",
-    "react-dom": "^16.7.0"
+    "react-dom": "^16.7.0",
+    "uuid": "^3.3.2"
   }
 }

@@ -1,5 +1,5 @@
 const { client } = require("../client");
-const { allQuery, updateMutation } = require("./graphqlQuery");
+const { createMutation, updateMutation } = require("./graphqlQuery");
 
 class Model {
   constructor(attrs) {
@@ -12,7 +12,7 @@ class Model {
     for (let key in newAttrs) {
       this[key] = newAttrs[key];
     }
-    client.mutate({
+    return client.mutate({
       mutation: updateMutation(this.constructor),
       variables: Object.assign(
         {
@@ -21,6 +21,25 @@ class Model {
         newAttrs
       )
     });
+  }
+
+  static create(attrs) {
+    const ModelSubclass = this;
+    return client
+      .mutate({
+        mutation: createMutation(ModelSubclass),
+        variables: attrs
+      })
+      .then(({ data }) => {
+        return new ModelSubclass(data);
+      });
+  }
+
+  /*
+   * Returns things like `todo`
+   */
+  static lowerName() {
+    return this.name.toLowerCase();
   }
 
   /*
