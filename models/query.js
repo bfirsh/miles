@@ -1,5 +1,6 @@
 const React = require("react");
 const { Query } = require("react-apollo");
+const { client } = require("../client");
 const { allQuery } = require("./graphqlQuery");
 
 function createQuery(model) {
@@ -8,7 +9,7 @@ function createQuery(model) {
     const query = allQuery(model);
     return React.createElement(
       Query,
-      { query: query, pollInterval: 500 },
+      { client: client, query: query, pollInterval: 500 },
       ({ loading, error, data }) => {
         let todos = [];
         if (data && data.todos) {

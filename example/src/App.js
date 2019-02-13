@@ -4,18 +4,12 @@ import "./App.css";
 
 import TodoListController from "./controllers/todoList";
 
-import { ApolloProvider } from "react-apollo";
-
-import { client } from "miles/client";
-
 class App extends Component {
   render() {
     return (
-      <ApolloProvider client={client}>
-        <Router>
-          <Route exact path="/" component={TodoListController} />
-        </Router>
-      </ApolloProvider>
+      <Router>
+        <Route exact path="/" component={TodoListController} />
+      </Router>
     );
   }
 }
