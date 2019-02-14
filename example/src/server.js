@@ -1,10 +1,5 @@
-require("@babel/register")({
-  extends: "./.babelrc",
-  ignore: [/node_modules/, /server/]
-});
-
-const { MilesServer } = require("miles/server");
-const Todo = require("./models/todo").default;
+import { MilesServer } from "miles/server";
+import Todo from "./models/todo";
 
 const server = new MilesServer();
 

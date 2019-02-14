@@ -7,7 +7,6 @@
     "example": "example"
   },
   "scripts": {
-    "start": "nodemon --exec node src/server/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
