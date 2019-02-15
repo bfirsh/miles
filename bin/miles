@@ -4,8 +4,6 @@ const path = require("path");
 const yargs = require("yargs");
 const { spawn } = require("child_process");
 
-const packageJson = require("../package.json");
-
 function init() {
   console.log("lol not done yet");
 }
@@ -24,7 +22,6 @@ function run(argv) {
 
 const argv = yargs
   .usage("$0 <cmd> [args]")
-  .version(packageJson.version)
   .command(
     "init <name>",
     "Create a Miles project",
