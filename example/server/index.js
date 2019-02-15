@@ -1,4 +1,4 @@
-import { MilesServer } from "miles/server";
+import { MilesServer } from "miles-prototype/server";
 import path from "path";
 
 import Todo from "../client/models/todo";

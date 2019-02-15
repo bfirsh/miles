@@ -1,5 +1,5 @@
-import { Model } from "miles/models";
-import { createQuery } from "miles/models/query";
+import { Model } from "miles-prototype/models";
+import { createQuery } from "miles-prototype/models/query";
 
 class Todo extends Model {
   static fields = {
