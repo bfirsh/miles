@@ -14,11 +14,14 @@ First, you define your models:
 
 ```javascript
 class Todo extends Model {
-  text = new StringField(),
-  completed = new BooleanField({default: false}),
+  static fields = {
+    id: new IDField(),
+    text: new StringField(),
+    completed: new BooleanField(default=false)
+  };
 
   toggle() {
-    this.update({completed: !this.completed});
+    this.update({ completed: !this.completed });
   }
 }
 ```
@@ -80,9 +83,9 @@ That's it! There are a few other bits that need adding, like authentication and 
 
 ## Getting started
 
-The easiest way to learn how to use Miles is by example. We're going to create a basic todo app, as outlined above.
+The easiest way to learn how to use Miles is by example. We're going to create a basic todo app, as outlined above. You'll need to have [Node 10.3 or above installed](https://nodejs.org/).
 
-You'll need to have Node 10.3 or above installed.
+### Creating an app
 
 First step is to scaffold a basic app:
 
@@ -91,10 +94,86 @@ $ npm init miles todoapp
 $ cd todoapp/
 ```
 
-You can then run this command to boot up a development server:
+Let's check that everything is working by booting up a development server. Run this command:
 
 ```
 $ npm start
 ```
 
 When it finished booting, you can go to http://localhost:3000 and you should see it running.
+
+Open up the `todoapp/` directory in a code editor or file browser to take a look around. You'll see a directory structure like this:
+
+```
+todoapp/
+  client/
+    controllers/
+      home.js
+    models/
+    views/
+    App.js
+    index.js
+  public/
+    index.html
+  server/
+    index.js
+  package.json
+```
+
+There are three main directories:
+
+- `client/` - The JavaScript React app that is your user-facing application.
+- `public/` - Any static files that you want served by your server, including the root `index.html`.
+- `server/` - The Node.js server that serves your app and data. This is the entrypoint for your application -- it compiles and serves everything in `client/` and `public/`.
+
+Within `client/`, you've got the main building blocks for your app:
+
+- `client/App.js` - Your app's URL routes.
+- `client/models/` - Your data models.
+- `client/views/` - React components that describe how to present your data.
+- `client/controllers/` - The business logic that wires together the models and views.
+
+There are a few other files in here, but don't worry too much about them -- we're going to look at all of the files in more detail later.
+
+### Model your data
+
+Models define your database schema. They are classes which define the database fields, and the operations that are performed on that data.
+
+The model objects themselves are used from the client. Miles takes care of transmitting the data to and from the server, and ultimately storing that data in a database.
+
+The idea is that this is a single, definitive source of truth about what your data looks like. Database tables, API clients, API servers, etc, can all be derived from it. Modelling your data also helps keep your code organised: instead of operations on the data being scattered all over your codebase, you can keep them all in one place behind a well-organised set of methods.
+
+We're making a todo app, so let's model a todo item. Create `client/models/todo.js` with this content:
+
+```javascript
+import {
+  Model,
+  IDField,
+  StringField,
+  BooleanField
+} from "miles-prototype/models";
+import { createQuery } from "miles-prototype/models/query";
+
+class Todo extends Model {
+  static fields = {
+    id: new IDField(),
+    text: new StringField(),
+    completed: new BooleanField(default=false)
+  };
+
+  toggle() {
+    this.update({ completed: !this.completed });
+  }
+}
+Todo.Query = createQuery(Todo);
+
+export default Todo;
+```
+
+As you can see, Miles models subclass `Model`. Models must have a `fields` attribute, which define the database fields.
+
+The field class uses tells Miles what type of database field to create, and what type to use to represent that data in JavaScript. Field classes also have various optional options, such as `default`, which defines a default value to assign to that field if it is not specified.
+
+You can also define your own methods on models to do whatever you need to do with your data. In this example, there is a method to toggle the state of the `completed` field. It calls the `update()` method. When called from within your app, this method makes an API call to the server and runs an `UPDATE` query on the database.
+
+_(Note: Ignore `Todo.Query`. We need to come up with a better syntax for that.)_
