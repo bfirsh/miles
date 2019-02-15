@@ -1,6 +1,6 @@
 {
   "name": "miles-prototype",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Everything you need to build a modern JavaScript app",
   "main": "index.js",
   "bin": {
