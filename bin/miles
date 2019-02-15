@@ -1,0 +1,48 @@
+#!/usr/bin/env node
+
+const path = require("path");
+const yargs = require("yargs");
+const { spawn } = require("child_process");
+
+const packageJson = require("../package.json");
+
+function init() {
+  console.log("lol not done yet");
+}
+
+function run(argv) {
+  const command = path.resolve(__dirname, "../node_modules/.bin/babel-node");
+  const args = [
+    "--presets",
+    "@babel/preset-env",
+    "--plugins",
+    "@babel/plugin-proposal-class-properties",
+    argv.file
+  ].concat(argv.args);
+  spawn(command, args, { stdio: "inherit" });
+}
+
+const argv = yargs
+  .usage("$0 <cmd> [args]")
+  .version(packageJson.version)
+  .command(
+    "init <name>",
+    "Create a Miles project",
+    yargs => {
+      yargs.positional("name", {
+        describe: "name of project"
+      });
+    },
+    init
+  )
+  .command(
+    "run <file> [args...]",
+    "Run a file in the Miles environment",
+    yargs => {
+      yargs.positional("file", { describe: "file to run" });
+      yargs.positional("args", { describe: "arguments to pass" });
+    },
+    run
+  )
+  .demandCommand()
+  .recommendCommands().argv;

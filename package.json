@@ -3,6 +3,9 @@
   "version": "0.9.0",
   "description": "Everything you need to build a modern JavaScript app",
   "main": "index.js",
+  "bin": {
+    "miles": "bin/miles"
+  },
   "directories": {
     "example": "example"
   },
@@ -12,6 +15,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.3.1",
     "apollo-boost": "^0.1.27",
     "apollo-client": "^2.4.12",
     "apollo-datasource": "^0.2.2",
