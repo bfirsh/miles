@@ -4,7 +4,10 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = (entry, public) => ({
   mode: "development",
-  entry: [entry, "webpack-hot-middleware/client?reload=true"],
+  entry: [
+    entry,
+    require.resolve("webpack-hot-middleware/client") + "?reload=true"
+  ],
   devtool: "inline-source-map",
   devServer: {
     contentBase: public,
@@ -16,13 +19,13 @@ module.exports = (entry, public) => ({
         test: /\.m?jsx?$/,
         exclude: /(node_modules|bower_components)/,
         use: {
-          loader: "babel-loader",
+          loader: require.resolve("babel-loader"),
           options: {
-            presets: ["babel-preset-react-app"],
+            presets: [require.resolve("babel-preset-react-app")],
             plugins: [
               // https://github.com/webpack/webpack/issues/4039
               [
-                "@babel/plugin-transform-modules-commonjs",
+                require.resolve("@babel/plugin-transform-modules-commonjs"),
                 {
                   allowTopLevelThis: true
                 }
@@ -33,7 +36,7 @@ module.exports = (entry, public) => ({
       },
       {
         test: /\.css$/,
-        use: ["style-loader", "css-loader"]
+        use: [require.resolve("style-loader"), require.resolve("css-loader")]
       }
     ]
   },
