@@ -14,7 +14,6 @@
   },
   "author": "",
   "license": "Apache-2.0",
-  "readme": "blah",
   "dependencies": {
     "@babel/core": "^7.2.2",
     "@babel/plugin-proposal-class-properties": "^7.3.0",
