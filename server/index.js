@@ -2,6 +2,7 @@ const { ApolloServer } = require("apollo-server-express");
 const express = require("express");
 const webpack = require("webpack");
 const webpackDevMiddleware = require("webpack-dev-middleware");
+const webpackHotMiddleware = require("webpack-hot-middleware");
 
 const TodoAPI = require("./datasources/todo");
 const { generateSchema } = require("../models/schema");
@@ -41,6 +42,7 @@ class MilesServer {
         publicPath: "/"
       })
     );
+    app.use(webpackHotMiddleware(compiler));
 
     apolloServer.applyMiddleware({ app });
 

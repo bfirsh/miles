@@ -1,12 +1,10 @@
-const path = require("path");
+const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 
 module.exports = {
   mode: "development",
-  entry: {
-    app: "./src/index.js"
-  },
+  entry: ["./src/index.js", "webpack-hot-middleware/client?reload=true"],
   devtool: "inline-source-map",
   devServer: {
     contentBase: "./public",
@@ -43,11 +41,11 @@ module.exports = {
     new CleanWebpackPlugin(["../example/public"]),
     new HtmlWebpackPlugin({
       template: "./public/index.html"
-    })
+    }),
+    new webpack.HotModuleReplacementPlugin()
   ],
   output: {
-    filename: "[name].bundle.js",
-    path: path.resolve(__dirname, "../example/public"),
+    filename: "static/js/bundle.js",
     publicPath: "/"
   }
 };
