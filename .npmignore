@@ -1,1 +1,4 @@
-README.md
+node_modules
+/local
+/package-lock.json
+/README.md
