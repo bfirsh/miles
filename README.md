@@ -122,9 +122,9 @@ todoapp/
 
 There are three main directories:
 
-- `client/` - The JavaScript React app that is your user-facing application.
+- `client/` - The user-facing React app.
 - `public/` - Any static files that you want served by your server, including the root `index.html`.
-- `server/` - The Node.js server that serves your app and data. This is the entrypoint for your application -- it compiles and serves everything in `client/` and `public/`.
+- `server/` - The Node.js server that serves your app and data. This is the entrypoint for your application – it compiles and serves everything in `client/` and `public/`.
 
 Within `client/`, you've got the main building blocks for your app:
 
@@ -133,32 +133,27 @@ Within `client/`, you've got the main building blocks for your app:
 - `client/views/` - React components that describe how to present your data.
 - `client/controllers/` - The business logic that wires together the models and views.
 
-There are a few other files in here, but don't worry too much about them -- we're going to look at all of the files in more detail later.
+There are a few other files in here, but don't worry too much about them – we're going to look at all of the files in more detail later.
 
 ### Model your data
 
-Models define your database schema. They are classes which define the database fields, and the operations that are performed on that data.
+Models define your database schema. They are classes which define the database fields and the operations that are performed on that data.
 
 The model objects themselves are used from the client. Miles takes care of transmitting the data to and from the server, and ultimately storing that data in a database.
 
-The idea is that this is a single, definitive source of truth about what your data looks like. Database tables, API clients, API servers, etc, can all be derived from it. Modelling your data also helps keep your code organised: instead of operations on the data being scattered all over your codebase, you can keep them all in one place behind a well-organised set of methods.
+The idea is that models are a single, definitive source of truth about what your data looks like. Database tables, API clients, API servers, etc, can all be derived from it. Modelling your data also helps keep your code organised: instead of operations on the data being scattered all over your codebase, you can keep them all in one place behind a well-organised set of methods.
 
 We're making a todo app, so let's model a todo item. Create `client/models/todo.js` with this content:
 
 ```javascript
-import {
-  Model,
-  IDField,
-  StringField,
-  BooleanField
-} from "miles-prototype/models";
+import models from "miles-prototype/models";
 import { createQuery } from "miles-prototype/models/query";
 
-class Todo extends Model {
+class Todo extends models.Model {
   static fields = {
-    id: new IDField(),
-    text: new StringField(),
-    completed: new BooleanField(default=false)
+    id: new models.IDField(),
+    text: new models.StringField(),
+    completed: new models.BooleanField()
   };
 
   toggle() {

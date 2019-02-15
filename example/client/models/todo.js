@@ -1,16 +1,11 @@
-import {
-  Model,
-  IDField,
-  StringField,
-  BooleanField
-} from "miles-prototype/models";
+import models from "miles-prototype/models";
 import { createQuery } from "miles-prototype/models/query";
 
-class Todo extends Model {
+class Todo extends models.Model {
   static fields = {
-    id: new IDField(),
-    text: new StringField(),
-    completed: new BooleanField()
+    id: new models.IDField(),
+    text: new models.StringField(),
+    completed: new models.BooleanField()
   };
 
   toggle() {
