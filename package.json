@@ -17,7 +17,6 @@
     "apollo-datasource": "^0.2.2",
     "apollo-server-express": "^2.4.0",
     "babel-preset-react-app": "^7.0.1",
-    "clean-webpack-plugin": "^1.0.1",
     "css-loader": "^2.1.0",
     "express": "^4.16.4",
     "graphql": "^14.1.1",

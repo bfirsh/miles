@@ -16,7 +16,9 @@ process.env.BABEL_ENV = "development";
 process.env.NODE_ENV = "development";
 
 class MilesServer {
-  constructor() {
+  constructor(opts) {
+    this.entry = opts.entry;
+    this.public = opts.public;
     this.models = [];
   }
 
@@ -34,7 +36,7 @@ class MilesServer {
 
   createServer() {
     const app = express();
-    const compiler = webpack(webpackConfig);
+    const compiler = webpack(webpackConfig(this.entry, this.public));
     const apolloServer = this.createApolloServer();
 
     app.use(

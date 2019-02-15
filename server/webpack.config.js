@@ -1,13 +1,13 @@
+const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const CleanWebpackPlugin = require("clean-webpack-plugin");
 
-module.exports = {
+module.exports = (entry, public) => ({
   mode: "development",
-  entry: ["./src/index.js", "webpack-hot-middleware/client?reload=true"],
+  entry: [entry, "webpack-hot-middleware/client?reload=true"],
   devtool: "inline-source-map",
   devServer: {
-    contentBase: "./public",
+    contentBase: public,
     watchContentBase: true
   },
   module: {
@@ -38,9 +38,8 @@ module.exports = {
     ]
   },
   plugins: [
-    new CleanWebpackPlugin(["../example/public"]),
     new HtmlWebpackPlugin({
-      template: "./public/index.html"
+      template: path.join(public, "index.html")
     }),
     new webpack.HotModuleReplacementPlugin()
   ],
@@ -48,4 +47,4 @@ module.exports = {
     filename: "static/js/bundle.js",
     publicPath: "/"
   }
-};
+});
