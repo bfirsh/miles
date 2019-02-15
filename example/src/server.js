@@ -5,6 +5,6 @@ const server = new MilesServer();
 
 server.registerModel(Todo);
 
-server.listen().then(({ url }) => {
-  console.log(`🎺 Server ready at ${url}`);
+server.listen({ port: 3000 }, () => {
+  console.log(`🎺 Server ready at http://localhost:3000`);
 });

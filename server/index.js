@@ -1,9 +1,18 @@
-const { ApolloServer } = require("apollo-server");
+const { ApolloServer } = require("apollo-server-express");
+const express = require("express");
+const webpack = require("webpack");
+const webpackDevMiddleware = require("webpack-dev-middleware");
+
 const TodoAPI = require("./datasources/todo");
-const resolvers = require("./resolvers");
 const { generateSchema } = require("../models/schema");
+const resolvers = require("./resolvers");
+const webpackConfig = require("./webpack.config");
 
 const todoAPI = new TodoAPI();
+
+// HACK
+process.env.BABEL_ENV = "development";
+process.env.NODE_ENV = "development";
 
 class MilesServer {
   constructor() {
@@ -14,14 +23,32 @@ class MilesServer {
     this.models.push(model);
   }
 
-  listen() {
-    const server = new ApolloServer({
+  createApolloServer() {
+    return new ApolloServer({
       typeDefs: generateSchema(this.models),
       resolvers: resolvers,
       dataSources: () => ({ todoAPI: todoAPI })
     });
+  }
 
-    return server.listen();
+  createServer() {
+    const app = express();
+    const compiler = webpack(webpackConfig);
+    const apolloServer = this.createApolloServer();
+
+    app.use(
+      webpackDevMiddleware(compiler, {
+        publicPath: "/"
+      })
+    );
+
+    apolloServer.applyMiddleware({ app });
+
+    return app;
+  }
+
+  listen(options, cb) {
+    return this.createServer().listen(options, cb);
   }
 }
 
