@@ -82,19 +82,19 @@ That's it! There are a few other bits that need adding, like authentication and 
 
 The easiest way to learn how to use Miles is by example. We're going to create a basic todo app, as outlined above.
 
-First step is to create your project directory. Miles includes a tool for generating a basic project to make it easy to get started.
+You'll need to have Node 10.3 or above installed.
+
+First step is to scaffold a basic app:
 
 ```
-$ miles init todoapp
-```
-
-Now, change into the directory it created and boot up the app:
-
-```
+$ npm init miles todoapp
 $ cd todoapp/
+```
+
+You can then run this command to boot up a development server:
+
+```
 $ npm start
 ```
 
-When it finished booting, you can go to http://localhost:3000 and it should be running.
-
-... yada yada
+When it finished booting, you can go to http://localhost:3000 and you should see it running.
