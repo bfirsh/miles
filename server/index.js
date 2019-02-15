@@ -37,7 +37,6 @@ class MilesServer {
   createServer() {
     const app = express();
     const compiler = webpack(webpackConfig(this.entry, this.public));
-    const apolloServer = this.createApolloServer();
 
     app.use(
       webpackDevMiddleware(compiler, {
@@ -46,7 +45,10 @@ class MilesServer {
     );
     app.use(webpackHotMiddleware(compiler));
 
-    apolloServer.applyMiddleware({ app });
+    if (this.models.length) {
+      const apolloServer = this.createApolloServer();
+      apolloServer.applyMiddleware({ app });
+    }
 
     return app;
   }
