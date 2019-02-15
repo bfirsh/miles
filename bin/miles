@@ -1,5 +1,10 @@
 #!/usr/bin/env node
 
+require("@babel/register")({
+  presets: ["@babel/preset-env"],
+  plugins: ["@babel/plugin-proposal-class-properties"]
+});
+
 const path = require("path");
 const yargs = require("yargs");
 const { spawn } = require("child_process");
@@ -9,16 +14,7 @@ function init() {
 }
 
 function run(argv) {
-  const command = path.resolve(__dirname, "../node_modules/.bin/babel-node");
-  const args = [
-    // HACK: babel-node won't look inside the right node_modules directory
-    "--presets",
-    "miles-prototype/node_modules/@babel/preset-env",
-    "--plugins",
-    "miles-prototype/node_modules/@babel/plugin-proposal-class-properties",
-    argv.file
-  ].concat(argv.args);
-  spawn(command, args, { stdio: "inherit" });
+  require(path.resolve(argv.file));
 }
 
 const argv = yargs
@@ -34,11 +30,10 @@ const argv = yargs
     init
   )
   .command(
-    "run <file> [args...]",
+    "run <file>",
     "Run a file in the Miles environment",
     yargs => {
       yargs.positional("file", { describe: "file to run" });
-      yargs.positional("args", { describe: "arguments to pass" });
     },
     run
   )
