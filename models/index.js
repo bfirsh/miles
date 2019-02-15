@@ -4,6 +4,7 @@ const {
   updateMutation,
   deleteMutation
 } = require("./graphqlQuery");
+const graphql = require("graphql");
 
 class Model {
   constructor(attrs) {
@@ -68,6 +69,27 @@ class Model {
   }
 }
 
+class IDField {
+  constructor() {
+    this.graphqlType = graphql.GraphQLID;
+  }
+}
+
+class StringField {
+  constructor() {
+    this.graphqlType = graphql.GraphQLString;
+  }
+}
+
+class BooleanField {
+  constructor() {
+    this.graphqlType = graphql.GraphQLBoolean;
+  }
+}
+
 module.exports = {
-  Model: Model
+  Model: Model,
+  IDField: IDField,
+  StringField: StringField,
+  BooleanField: BooleanField
 };

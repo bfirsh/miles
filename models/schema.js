@@ -1,18 +1,5 @@
 const graphql = require("graphql");
 
-function typeFromField(field) {
-  switch (field) {
-    case "ID":
-      return graphql.GraphQLID;
-    case "String":
-      return graphql.GraphQLString;
-    case "Boolean":
-      return graphql.GraphQLBoolean;
-    default:
-      throw new Error(`unknown field type: ${field}`);
-  }
-}
-
 function fieldsFromModel({ model, required, id }) {
   const fields = {};
   for (let key in model.fields) {
@@ -20,7 +7,7 @@ function fieldsFromModel({ model, required, id }) {
     if (key === "id" && !id) {
       continue;
     }
-    const type = typeFromField(model.fields[key]);
+    const type = model.fields[key].graphqlType;
     // IDs are always required, if we're including them
     if (required || key == "id") {
       fields[key] = { type: new graphql.GraphQLNonNull(type) };

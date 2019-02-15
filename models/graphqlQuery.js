@@ -24,7 +24,7 @@ function createOperationArguments(model) {
     fieldNames.map(name => {
       return {
         name: name,
-        type: model.fields[name],
+        type: model.fields[name].graphqlType.name,
         required: true
       };
     })
@@ -40,7 +40,7 @@ function updateOperationArguments(model) {
     fieldNames.map(name => {
       return {
         name: name,
-        type: model.fields[name],
+        type: model.fields[name].graphqlType.name,
         required: name == "id"
       };
     })
