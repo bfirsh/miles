@@ -54,17 +54,19 @@ const TodoListView = ({ todos, toggleTodo }) => (
 Then, wire the two together with a controller:
 
 ```javascript
-const TodoListController = () => (
+const TodoController = () => (
   <div>
     <h1>Todos</h1>
-    <Query query={Todo.all()}>
-      {({ loading, error, data }) => {
+    <Todo.Query all>
+      {({ loading, error, todos }) => {
         if (loading) return <div>Loading...</div>;
         if (error) return <div>Error: {error.toString()}</div>;
 
-        return <TodoListView todos={data} toggleTodo={todo => todo.toggle()} />;
+        return (
+          <TodoListView todos={todos} toggleTodo={todo => todo.toggle()} />
+        );
       }}
-    </Query>
+    </Todo.Query>
   </div>
 );
 ```
@@ -74,7 +76,7 @@ Finally, you hook the controller up to a URL route:
 ```javascript
 const App = () => (
   <Router>
-    <Route exact path="/" component={TodoListController} />
+    <Route exact path="/" component={TodoController} />
   </Router>
 );
 ```
@@ -172,3 +174,67 @@ The field class uses tells Miles what type of database field to create, and what
 You can also define your own methods on models to do whatever you need to do with your data. In this example, there is a method to toggle the state of the `completed` field. It calls the `update()` method. When called from within your app, this method makes an API call to the server and runs an `UPDATE` query on the database.
 
 _(Note: Ignore `Todo.Query`. We need to come up with a better syntax for that.)_
+
+### Writing some views
+
+Next, let's write some views. This section assumes you have some knowledge of React, so if you don't, [give its tutorial a whirl](https://reactjs.org/tutorial/tutorial.html).
+
+Views are just React components. They describe how data should be presented and how the user-interface should behave.
+
+Let's make a simple view that lists todos. Create `client/views/todo-list.js` with this content:
+
+```javascript
+import React from "react";
+
+const TodoView = ({ onClick, completed, text }) => (
+  <li
+    onClick={onClick}
+    style={{
+      textDecoration: completed ? "line-through" : "none"
+    }}
+  >
+    {text}
+  </li>
+);
+
+const TodoListView = ({ todos, toggleTodo }) => (
+  <ul>
+    {todos.map(todo => (
+      <TodoView key={todo.id} {...todo} onClick={() => toggleTodo(todo)} />
+    ))}
+  </ul>
+);
+
+export default TodoListView;
+```
+
+This is a React component that, when passed a list of todos as a property, outputs a list of todos. The todos are passed as a list of objects in the form `[{id: "5e6b4b", text: "Buy milk", completed: false}, ...]`.
+
+### Wiring up the views to data
+
+To connect a model to a view, you use a controller. Controllers describe what data you want to fetch, how to handle loading state, how to handle error state, translating user interaction into data mutations, and so on.
+
+Controllers are just React components, but controllers and views are separated out just for the sake of organising our code. In general, business logic lives in controllers, whereas presentational logic lives in views. (If you've used "container" components when building React apps, controllers are pretty much the same thing.)
+
+A controller has already been made in `client/controllers/home.js` to display some content when you run the server. Let's replace that code with some code that actually does something:
+
+```javascript
+import React from "react";
+import Todo from "../models/todo";
+
+const HomeController = () => (
+  <div>
+    <h1>Todos</h1>
+    <Todo.Query all>
+      {({ loading, error, todos }) => {
+        if (loading) return <div>Loading...</div>;
+        if (error) return <div>Error: {error.toString()}</div>;
+
+        return <TodoListView todos={todos} />;
+      }}
+    </Todo.Query>
+  </div>
+);
+
+export default HomeController;
+```
