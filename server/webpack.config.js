@@ -17,7 +17,7 @@ module.exports = (entry, public) => ({
     rules: [
       {
         test: /\.m?jsx?$/,
-        exclude: /(node_modules|bower_components)/,
+        exclude: /node_modules\/(?!(miles-prototype)\/).*/,
         use: {
           loader: require.resolve("babel-loader"),
           options: {
