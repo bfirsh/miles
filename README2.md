@@ -155,7 +155,7 @@ class Todo extends models.Model {
   static fields = {
     id: new models.IDField(),
     text: new models.StringField(),
-    completed: new models.BooleanField()
+    completed: new models.BooleanField({ default: false })
   };
 
   toggle() {
@@ -221,6 +221,7 @@ A controller has already been made in `client/controllers/home.js` to display so
 ```javascript
 import React from "react";
 import Todo from "../models/todo";
+import TodoListView from "../views/todo-list";
 
 const HomeController = () => (
   <div>
@@ -238,3 +239,63 @@ const HomeController = () => (
 
 export default HomeController;
 ```
+
+The `Todo.Query` component is available on all models. It runs a query against the database and provides the data to the function inside it. That function first checks for loading and error states, then if the data has loaded successfully, passes it to the view we created before.
+
+Now, run `yarn start` and open up http://localhost:3000 in your browser. You should see the title, but nothing else. That's because we haven't got any data in the database yet!
+
+### Creating things
+
+Let's add a form for creating todos. Create `client/views/todo-create.js` to define how it looks and how the form works:
+
+```javascript
+import React from "react";
+
+const TodoCreateView = ({ createTodo }) => {
+  let input;
+
+  return (
+    <div>
+      <form
+        onSubmit={e => {
+          e.preventDefault();
+          if (!input.value.trim()) {
+            return;
+          }
+          createTodo(input.value);
+          input.value = "";
+        }}
+      >
+        <input ref={node => (input = node)} />
+        <button type="submit">Add Todo</button>
+      </form>
+    </div>
+  );
+};
+
+export default TodoCreateView;
+```
+
+The view doesn't actually store the data – it just calls the `createTodo` callback when the form is submitted.
+
+We can wire this up to create some data in the controller. First, add this line to the top of `client/controllers/home.js`, underneath the `TodoCreateView` import:
+
+```javascript
+import TodoCreateView from "../views/todo-create.js";
+```
+
+Then, insert the view between the `<h1>` and the `<Todo.Query>`:
+
+```javascript
+  ...
+  <h1>Todos</h1>
+  <TodoCreateView createTodo={text => Todo.create({ text: text })} />
+  <Todo.Query all>
+  ...
+```
+
+We pass a function for the `createTodo` callback, which calls the `Todo.create()` method. This sends an API request to the server, which then creates the todo in the database. This method returns a promise to indicate the result of the creation, but we don't need to worry about this because `Todo.Query` will automatically pick up the new todo we have created.
+
+_(Note: Decent error handling is a WIP.)_
+
+Open up the app in your browser and you should see the form to create todos. Give it a try!
