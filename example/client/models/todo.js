@@ -5,7 +5,7 @@ class Todo extends models.Model {
   static fields = {
     id: new models.IDField(),
     text: new models.StringField(),
-    completed: new models.BooleanField()
+    completed: new models.BooleanField({ default: false })
   };
 
   toggle() {

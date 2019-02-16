@@ -35,12 +35,24 @@ class Model {
     });
   }
 
+  static defaults() {
+    const defaults = {};
+    for (let key in this.fields) {
+      if (this.fields[key].default !== undefined) {
+        defaults[key] = this.fields[key].default;
+      }
+    }
+    return defaults;
+  }
+
   static create(attrs) {
     const ModelSubclass = this;
+    const attrsWithDefaults = Object.assign(ModelSubclass.defaults(), attrs);
+
     return client
       .mutate({
         mutation: createMutation(ModelSubclass),
-        variables: attrs
+        variables: attrsWithDefaults
       })
       .then(({ data }) => {
         return new ModelSubclass(data);
@@ -76,13 +88,15 @@ class IDField {
 }
 
 class StringField {
-  constructor() {
+  constructor(opts = {}) {
+    this.default = opts.default;
     this.graphqlType = graphql.GraphQLString;
   }
 }
 
 class BooleanField {
-  constructor() {
+  constructor(opts = {}) {
+    this.default = opts.default;
     this.graphqlType = graphql.GraphQLBoolean;
   }
 }

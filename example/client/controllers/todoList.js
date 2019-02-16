@@ -14,9 +14,7 @@ const TodoListController = () => (
 
         return (
           <React.Fragment>
-            <TodoCreateView
-              createTodo={text => Todo.create({ text: text, completed: false })}
-            />
+            <TodoCreateView createTodo={text => Todo.create({ text: text })} />
             <TodoListView
               todos={todos}
               toggleTodo={todo => todo.toggle()}
