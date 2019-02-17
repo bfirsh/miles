@@ -189,7 +189,7 @@ Then add this line just before `server.listen(...)`:
 server.registerModel(Todo);
 ```
 
-This server is just a plain old Express app. If you need to anything custom server-side, or add any extra API calls, this is where you can do it.
+The server is just a plain old Express app. If you need to do any custom server-side stuff, or add any extra API calls, this is where you can do it.
 
 _(Note: This is probably where authorization will happen, perhaps as options passed to `registerModel()`.)_
 
