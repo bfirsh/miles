@@ -332,7 +332,7 @@ In `client/controllers/home.js`, change the `<TodoListView ... />` definition to
 return <TodoListView todos={todos} toggleTodo={todo => todo.toggle()} />;
 ```
 
-The `toggleTodo` callback passes an instance of `Todo`, so we can use the `toggle()` helper method we defined on the model above to toggle our todo.
+The `toggleTodo` callback is passed an instance of `Todo`. On the model, we have already added implemented a `toggle()` method, so we can just call that directly from here.
 
 That's it! Your development server should have automatically reloaded to reflect the change you made, so try clicking on some todos to mark them as done.
 
