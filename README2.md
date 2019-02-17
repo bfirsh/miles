@@ -175,6 +175,26 @@ You can also define your own methods on models to do whatever you need to do wit
 
 _(Note: Ignore `Todo.Query`. We need to come up with a better syntax for that.)_
 
+You also need to register the model with the server so it knows to create database tables and serve up an API for it.
+
+In `server/index.js`, import the model underneath the other imports at the top:
+
+```javascript
+import Todo from "../client/models/todo";
+```
+
+Then add this line just before `server.listen(...)`:
+
+```javascript
+server.registerModel(Todo);
+```
+
+This server is just a plain old Express app. If you need to anything custom server-side, or add any extra API calls, this is where you can do it.
+
+_(Note: This is probably where authorization will happen, perhaps as options passed to `registerModel()`.)_
+
+You'll need to restart your development server now if it's running because I haven't implemented auto-reloading for the server yet. Sorry.
+
 ### Writing some views
 
 Next, let's write some views. This section assumes you have some knowledge of React, so if you don't, [give its tutorial a whirl](https://reactjs.org/tutorial/tutorial.html).
@@ -208,7 +228,7 @@ const TodoListView = ({ todos, toggleTodo }) => (
 export default TodoListView;
 ```
 
-This is a React component that, when passed a list of todos as a property, outputs a list of todos. The todos are passed as a list of objects in the form `[{id: "5e6b4b", text: "Buy milk", completed: false}, ...]`.
+This is a React component that, when passed a list of todos as a property, outputs a list of todos. The todos are list of instances of the `Todo` model, with `id`, `text`, and `completed` properties.
 
 ### Wiring up the views to data
 
@@ -246,7 +266,7 @@ Now, run `yarn start` and open up http://localhost:3000 in your browser. You sho
 
 ### Creating things
 
-Let's add a form for creating todos. Create `client/views/todo-create.js` to define how it looks and how the form works:
+Let's add a form for creating todos. Create the view `client/views/todo-create.js` to define how it looks and how the form works:
 
 ```javascript
 import React from "react";
@@ -299,3 +319,25 @@ We pass a function for the `createTodo` callback, which calls the `Todo.create()
 _(Note: Decent error handling is a WIP.)_
 
 Open up the app in your browser and you should see the form to create todos. Give it a try!
+
+### Updating things
+
+Now we've got a bunch of todos, it would be useful if we could mark them as completed.
+
+In `client/views/todo-list.js`, our views already have wired up `onClick` to a `toggleTodo` callback. All we need to do is add a bit of code to the controller to make it actually update the todo.
+
+In `client/controllers/home.js`, change the `<TodoListView ... />` definition to this:
+
+```javascript
+return <TodoListView todos={todos} toggleTodo={todo => todo.toggle()} />;
+```
+
+The `toggleTodo` callback passes an instance of `Todo`, so we can use the `toggle()` helper method we defined on the model above to toggle our todo.
+
+That's it! Your development server should have automatically reloaded to reflect the change you made, so try clicking on some todos to mark them as done.
+
+### Deleting things
+
+_(Todo. It's just a `todo.delete()` method.)_
+
+### Next steps
