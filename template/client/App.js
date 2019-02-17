@@ -5,9 +5,11 @@ import "./App.css";
 import HomeController from "./controllers/home";
 
 const App = () => (
-  <Router>
-    <Route exact path="/" component={HomeController} />
-  </Router>
+  <div class="App">
+    <Router>
+      <Route exact path="/" component={HomeController} />
+    </Router>
+  </div>
 );
 
 export default App;
