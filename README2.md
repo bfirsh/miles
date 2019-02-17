@@ -284,7 +284,7 @@ We can wire this up to create some data in the controller. First, add this line 
 import TodoCreateView from "../views/todo-create.js";
 ```
 
-Then, insert the view between the `<h1>` and the `<Todo.Query>`:
+Then, insert the view between `<h1>` and `<Todo.Query>`:
 
 ```javascript
   ...

@@ -1,47 +1,60 @@
-module.exports = {
-  Query: {
-    todos: (_, __, { dataSources }) => dataSources.todoAPI.getAllTodos(),
-    todo: (_, { id }, { dataSources }) => dataSources.todoAPI.getTodoById(id)
-  },
-  Mutation: {
-    createTodo: (_, attrs, { dataSources }) => {
-      const todo = dataSources.todoAPI.createTodo(attrs);
+const Database = require("./database");
 
-      if (!todo) {
-        return {
-          success: false,
-          message: "failed to create todo"
-        };
-      }
+const database = new Database();
 
+/*
+ * Creates queries like `todo` and `todos`.
+ */
+function createQuery(model) {
+  return {
+    [model.pluralLowerName()]: () => database.getAll(model.name),
+    [model.lowerName()]: (_, { id }) => database.getByID(model.name, id)
+  };
+}
+
+/*
+ * Creates mutations like `createTodo`, `updateTodo`, and `deleteTodo`.
+ */
+function createMutation(model) {
+  return {
+    [`create${model.name}`]: (_, attrs) => {
+      const obj = database.create(model.name, attrs);
       return {
         success: true,
-        message: "todo created",
-        todo: todo
+        [model.lowerName()]: obj
       };
     },
-    updateTodo: (_, { id, completed }, { dataSources }) => {
-      const todo = dataSources.todoAPI.updateTodo({ id, completed });
-
-      if (!todo) {
-        return {
-          success: false,
-          message: "failed to update todo"
-        };
+    [`update${model.name}`]: (_, { id, ...attrs }) => {
+      const obj = database.update(model.name, id, attrs);
+      if (!obj) {
+        return { success: false, message: "object not found" };
       }
-
       return {
         success: true,
-        message: "todo updated",
-        todo: todo
+        [model.lowerName()]: obj
       };
     },
-    deleteTodo: (_, { id }, { dataSources }) => {
-      dataSources.todoAPI.deleteTodo(id);
-      return {
-        success: true,
-        message: "todo deleted"
-      };
+    [`delete${model.name}`]: (_, { id }) => {
+      database.delete(model.name, id);
+      return { success: true };
     }
+  };
+}
+
+module.exports = models => {
+  const resolvers = {
+    Query: {},
+    Mutation: {}
+  };
+
+  for (let model of models) {
+    database.createTable(model.name);
+    resolvers.Query = Object.assign(resolvers.Query, createQuery(model));
+    resolvers.Mutation = Object.assign(
+      resolvers.Mutation,
+      createMutation(model)
+    );
   }
+
+  return resolvers;
 };

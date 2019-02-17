@@ -4,12 +4,9 @@ const webpack = require("webpack");
 const webpackDevMiddleware = require("webpack-dev-middleware");
 const webpackHotMiddleware = require("webpack-hot-middleware");
 
-const TodoAPI = require("./datasources/todo");
 const { generateSchema } = require("../models/schema");
-const resolvers = require("./resolvers");
+const createResolvers = require("./resolvers");
 const webpackConfig = require("./webpack.config");
-
-const todoAPI = new TodoAPI();
 
 // HACK
 process.env.BABEL_ENV = "development";
@@ -29,8 +26,7 @@ class MilesServer {
   createApolloServer() {
     return new ApolloServer({
       typeDefs: generateSchema(this.models),
-      resolvers: resolvers,
-      dataSources: () => ({ todoAPI: todoAPI })
+      resolvers: createResolvers(this.models)
     });
   }
 
