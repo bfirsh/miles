@@ -26,7 +26,7 @@ class Todo extends Model {
 }
 ```
 
-The data schema is used to create a PostgreSQL table, as well as a client-side API for you to work with the data. Miles also creates a server-side API so the client can access the database, but you don't need to worry about this if you don't want to.
+This definition is used to create a PostgreSQL table, and a bunch of methods are provided on the model for creating, reading, updating, and deleting data from the client. Miles wires up the client and server automatically, so you don't need to worry about this if you don't want to.
 
 Next, you define your UI with React:
 
