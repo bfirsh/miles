@@ -4,6 +4,8 @@ const { client } = require("../client");
 const { allQuery } = require("./graphqlQuery");
 
 function createQuery(model) {
+  const resultKey = model.pluralLowerName();
+
   return function MilesQuery({ children }) {
     // TODO: assume all query
     const query = allQuery(model);
@@ -11,11 +13,14 @@ function createQuery(model) {
       Query,
       { client: client, query: query, pollInterval: 500 },
       ({ loading, error, data }) => {
-        let todos = [];
-        if (data && data.todos) {
-          todos = data.todos.map(attrs => new model(attrs));
+        let result = [];
+        if (data && data[resultKey]) {
+          result = data[resultKey].map(attrs => new model(attrs));
         }
-        return children({ loading, error, todos });
+
+        // Returns an object like { loading: false, error: false, result: [...], todos: [...]}
+        // Both result and todos is returned so you have two options for what to name it
+        return children({ loading, error, result, [resultKey]: result });
       }
     );
   };
