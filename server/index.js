@@ -3,6 +3,7 @@ const express = require("express");
 const webpack = require("webpack");
 const webpackDevMiddleware = require("webpack-dev-middleware");
 const webpackHotMiddleware = require("webpack-hot-middleware");
+const historyApiFallback = require("connect-history-api-fallback");
 
 const { generateSchema } = require("../models/schema");
 const createResolvers = require("./resolvers");
@@ -32,19 +33,26 @@ class MilesServer {
 
   createServer() {
     const app = express();
-    const compiler = webpack(webpackConfig(this.entry, this.public));
 
+    // Serve Apollo server at /graphql
+    if (this.models.length) {
+      const apolloServer = this.createApolloServer();
+      apolloServer.applyMiddleware({ app });
+    }
+
+    // Fall back to / for all routes so client-side routing works
+    app.use(historyApiFallback());
+
+    // Compile and serve static assets
+    const compiler = webpack(webpackConfig(this.entry, this.public));
     app.use(
       webpackDevMiddleware(compiler, {
         publicPath: "/"
       })
     );
-    app.use(webpackHotMiddleware(compiler));
 
-    if (this.models.length) {
-      const apolloServer = this.createApolloServer();
-      apolloServer.applyMiddleware({ app });
-    }
+    // Auto-reload for JS and CSS
+    app.use(webpackHotMiddleware(compiler));
 
     return app;
   }
