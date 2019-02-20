@@ -4,7 +4,7 @@ let client;
 
 if (process.browser) {
   client = new ApolloClient({
-    uri: "/graphql"
+    uri: "/_graphql"
   });
 }
 

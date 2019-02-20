@@ -37,7 +37,7 @@ class MilesServer {
     // Serve Apollo server at /graphql
     if (this.models.length) {
       const apolloServer = this.createApolloServer();
-      apolloServer.applyMiddleware({ app });
+      apolloServer.applyMiddleware({ app, path: "/_graphql" });
     }
 
     // Fall back to / for all routes so client-side routing works
