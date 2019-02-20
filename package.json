@@ -39,6 +39,7 @@
     "uuid": "^3.3.2",
     "webpack": "^4.29.3",
     "webpack-dev-middleware": "^3.5.2",
-    "webpack-hot-middleware": "^2.24.3"
+    "webpack-hot-middleware": "^2.24.3",
+    "yargs": "^13.2.1"
   }
 }
