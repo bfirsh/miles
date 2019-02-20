@@ -5,7 +5,7 @@ import "./App.css";
 import HomeController from "./controllers/home";
 
 const App = () => (
-  <div class="App">
+  <div className="App">
     <Router>
       <Route exact path="/" component={HomeController} />
     </Router>
