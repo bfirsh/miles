@@ -1,3 +1,5 @@
+**NOTE:** This is a sketch of an idea. Don't expect things to work properly, or things to be fully thought through. It doesn't actually save data to a database yet.
+
 # 🎺 Miles
 
 **Everything you need to build a modern JavaScript app**
